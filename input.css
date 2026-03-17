@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.skill-active {
+  border-color: var(--skill-color);
+}
+
+.skill-active .skill-bg {
+  opacity: 0.1;
+}
+
+.skill-active svg {
+  color: var(--skill-color);
+}
+
+.skill-active h3 {
+  color: white;
+}
