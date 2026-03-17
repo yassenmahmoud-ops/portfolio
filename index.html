@@ -859,7 +859,7 @@
             </div>
           </div>
           <div>
-            <form class="space-y-4 sm:space-y-6">
+            <form id="contact-form" class="space-y-4 sm:space-y-6">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <label class="block text-gray-400 mb-2 text-sm sm:text-base light:text-slate-600"
@@ -867,6 +867,8 @@
                   >
                   <input
                     type="text"
+                    id="name"
+                    required
                     class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-dark-900 border border-dark-700 rounded-lg text-white focus:border-primary-500 focus:outline-none text-sm sm:text-base light:bg-slate-50 light:border-slate-300 light:text-slate-900 light:focus:border-blue-500"
                   />
                 </div>
@@ -876,6 +878,8 @@
                   >
                   <input
                     type="email"
+                    id="email"
+                    required
                     class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-dark-900 border border-dark-700 rounded-lg text-white focus:border-primary-500 focus:outline-none text-sm sm:text-base light:bg-slate-50 light:border-slate-300 light:text-slate-900 light:focus:border-blue-500"
                   />
                 </div>
@@ -886,6 +890,8 @@
                 >
                 <input
                   type="text"
+                  id="subject"
+                  required
                   class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-dark-900 border border-dark-700 rounded-lg text-white focus:border-primary-500 focus:outline-none text-sm sm:text-base light:bg-slate-50 light:border-slate-300 light:text-slate-900 light:focus:border-blue-500"
                 />
               </div>
@@ -895,15 +901,19 @@
                 >
                 <textarea
                   rows="4 sm:rows-5"
+                  id="message"
+                  required
                   class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-dark-900 border border-dark-700 rounded-lg text-white focus:border-primary-500 focus:outline-none resize-none text-sm sm:text-base light:bg-slate-50 light:border-slate-300 light:text-slate-900 light:focus:border-blue-500"
                 ></textarea>
               </div>
               <button
                 type="submit"
+                id="submit-btn"
                 class="w-full px-6 sm:px-8 py-2 sm:py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-lg transition duration-300 transform hover:scale-105 text-sm sm:text-base light:bg-blue-500 light:hover:bg-blue-600"
               >
                 Send Message
               </button>
+              <div id="form-message" class="mt-4 text-center hidden"></div>
             </form>
           </div>
         </div>
@@ -1084,6 +1094,41 @@
         },
         { passive: true },
       ); // Passive event listener for better performance
+
+      // Contact form handling with mailto
+      const contactForm = document.getElementById('contact-form');
+      const submitBtn = document.getElementById('submit-btn');
+      const formMessage = document.getElementById('form-message');
+
+      if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+          e.preventDefault(); // Prevent form submission
+
+          const name = document.getElementById('name').value;
+          const email = document.getElementById('email').value;
+          const subject = document.getElementById('subject').value;
+          const message = document.getElementById('message').value;
+
+          // Create mailto link with form data
+          const mailtoLink = `mailto:yassenmahmoud@std.mans.edu.eg?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+            `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+          )}`;
+
+          // Open email client
+          window.location.href = mailtoLink;
+
+          // Show success message
+          formMessage.className = 'mt-4 text-center text-green-500';
+          formMessage.textContent = 'Email client opened! Send the message from there.';
+          formMessage.classList.remove('hidden');
+
+          // Reset form after a delay
+          setTimeout(() => {
+            contactForm.reset();
+            formMessage.classList.add('hidden');
+          }, 3000);
+        });
+      }
     </script>
   </body>
 </html>
